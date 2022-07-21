@@ -8,9 +8,10 @@ import binascii, mpy_cross, time
 import hashlib
 import os
 from functools import partial
-
+#MicroPython v1.14-876-gfbecba865 on 2021-05-04; LEGO Technic Large Hub with STM32F413xx
+# TQUCHyCNHEgKAAcc
 LIB = '../'
-MPY_LIB = '../mpy/'
+MPY_LIB = '../'
 INSTALLER = 'install_mpy_matrix_tools.py'
 BASE_SCRIPT = 'base_script.py'
 SKIP_FILES = ['__pycache__', 'matrix.py']
@@ -22,7 +23,7 @@ encoded = []
 for f in files:
     out_file = f.split(".")[0]+".mpy"
     out_file_loc = MPY_LIB+out_file
-    mpy_cross.run('-march=armv6',LIB+f,'-o', out_file_loc)
+    mpy_cross.run('-march=armv7m', LIB+f,'-o', out_file_loc)
     time.sleep(0.5)
     with open(out_file_loc,'rb') as mpy_file:
         file_hash = hashlib.sha256(mpy_file.read()).hexdigest()
@@ -33,7 +34,7 @@ for f in files:
     print(out_file,": ",len(chunks)," chunks of ", CHUNK_SIZE)
     encoded += [(
         out_file,
-        tuple(chunks), 
+        tuple(chunks),
         file_hash
     )]
 
